@@ -67,7 +67,6 @@
                android:theme="@style/textStyle"
                android:textAlignment="textEnd"
                android:layout_gravity="end"
-
           />
 
 
