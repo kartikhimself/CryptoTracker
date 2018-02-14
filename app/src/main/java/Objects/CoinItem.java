@@ -6,15 +6,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 import Utilities.Util;
 
 /**
  * Created by Ultranova on 2/11/2018.
  */
 
-public class CoinItem {
+public class CoinItem implements Serializable {
 
-    private final JSONObject coin;
+    private transient JSONObject coin;
     private String COIN_ID;
     private String TITLE;
     private String SYMBOL;
@@ -23,16 +25,14 @@ public class CoinItem {
 
     public CoinItem(JSONObject coin){
         this.coin = coin;
-        setOfferDetail();
+        setCoinDetail();
     }
 
-    public void setOfferDetail(){
+    public  void setCoinDetail(){
 
         try {
-
             COIN_ID = coin.getString("Id");
             TITLE  = coin.getString("CoinName");
-
             if(coin.has("ImageUrl")) {
                 IMAGE = coin.getString("ImageUrl");
             }

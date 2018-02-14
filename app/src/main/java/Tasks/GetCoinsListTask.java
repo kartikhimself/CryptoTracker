@@ -1,10 +1,9 @@
 package Tasks;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.evmcstudios.cryptotracker.MainPages.CTMain;
+import com.evmcstudios.cryptotracker.MainPages.CTSearchCoin;
 
 import HttpClient.HttpHandler;
 import Utilities.Util;
@@ -15,9 +14,9 @@ import Utilities.Util;
 
 public class GetCoinsListTask extends AsyncTask<Void,Void,String> {
 
-     private CTMain activity;
+     private CTSearchCoin activity;
 
-     public GetCoinsListTask(CTMain activity) {
+     public GetCoinsListTask(CTSearchCoin activity) {
         this.activity = activity;
     }
 

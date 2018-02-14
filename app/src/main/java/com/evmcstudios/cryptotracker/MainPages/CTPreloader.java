@@ -3,7 +3,6 @@ package com.evmcstudios.cryptotracker.MainPages;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
@@ -24,7 +23,7 @@ public class CTPreloader extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
          setContentView(R.layout.content_ctpreloader);
-        goToMainPage(getApplicationContext());
+         goToMainPage(getApplicationContext());
 
 
 
@@ -32,7 +31,7 @@ public class CTPreloader extends AppCompatActivity {
 
 
 
-     public void goToMainPage(Context context) {
+     public void goToMainPage(final Context context) {
 
 
        Timer timer = new Timer();
@@ -41,14 +40,14 @@ public class CTPreloader extends AppCompatActivity {
            @Override
            public void run() {
 
-               Intent mainPage = new Intent(getApplicationContext(), CTMain.class );
+               Intent mainPage = new Intent(context, CTSearchCoin.class );
                startActivity(mainPage);
                finish();
            }
        };
 
 
-       timer.schedule(action, 1000);
+       timer.schedule(action, 2500);
 
 
 

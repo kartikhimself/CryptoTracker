@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -13,7 +14,7 @@ import java.util.Iterator;
  * Created by Ultranova on 2/11/2018.
  */
 
-public class CoinBucket {
+public class CoinBucket implements Serializable {
 
     private final String bucket;
 

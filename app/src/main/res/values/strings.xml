@@ -3,11 +3,15 @@
     <string name="action_settings">Settings</string>
 
     <!-- PAGES -->
-
-
+    <string name="app_watchlist">Watch list</string>
+    <string name="app_search_coin">Search coin</string>
+    <string name="app_news">News</string>
 
     <!-- COIN DETAILS -->
-
     <string name="coin_name">Coin Name</string>
+
+    <!-- FIELD TEXT -->
+    <string name="search_coin">Search coin...</string>
+
 
 </resources>
