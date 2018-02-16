@@ -20,6 +20,7 @@ public class CoinItem implements Serializable {
     private String COIN_ID;
     private String TITLE;
     private String SYMBOL;
+    private String PRICE;
     private String IMAGE = "-";
 
 
@@ -60,6 +61,18 @@ public class CoinItem implements Serializable {
 
     public String getSymbol(){
         return this.SYMBOL;
+    }
+
+    public void setPrice(String price) {
+
+        this.PRICE = price;
+
+    }
+
+    public String getPrice() {
+
+        return this.PRICE;
+
     }
 
 

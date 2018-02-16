@@ -24,6 +24,13 @@
             android:name=".MainPages.CTPreloader" >
 
 
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+
+
         </activity>
 
         <!-- Search Page -->
@@ -46,11 +53,6 @@
             android:label="@string/app_watchlist"
             android:theme="@style/AppTheme.NoActionBar"
             >
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
 
 

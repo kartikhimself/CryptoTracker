@@ -23,9 +23,11 @@ import android.widget.ListView;
 import com.evmcstudios.cryptotracker.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import Adapters.CoinsAdapter;
 import Objects.CoinItem;
+import Tasks.GetCoinsPricesTask;
 import Utilities.Storage;
 
 /**
@@ -39,6 +41,7 @@ public class CTWatchList extends AppCompatActivity{
     private CoinsAdapter mainCoinsAdapter = null;
     private ListView MainCoinListView;
     private ArrayList<CoinItem> currentCoins;
+    public GetCoinsPricesTask PricesTask = null;
 
 
     @Override
@@ -53,8 +56,6 @@ public class CTWatchList extends AppCompatActivity{
         // stored coins
 
         StoredCoins = new Storage(getApplicationContext());
-
-
 
         setWatchList();
 
@@ -178,24 +179,49 @@ public class CTWatchList extends AppCompatActivity{
      ArrayList<CoinItem> newArr = new ArrayList<>();
      newArr.addAll(StoredCoins.getCoinList());
 
-    if(mainCoinsAdapter == null) {
+      if(mainCoinsAdapter == null) {
+
         mainCoinsAdapter = new CoinsAdapter(getApplicationContext(), newArr);
         MainCoinListView.setAdapter(mainCoinsAdapter);
         mainCoinsAdapter.notifyDataSetChanged();
-    }
 
-    else {
+          }
+      else {
 
         mainCoinsAdapter.updateCoins(StoredCoins.getCoinList());
 
+          }
 
-    }
+
+        getPrices(StoredCoins.getCoinList());
+
+
+
 
 
         }
 
     }
 
+
+    public void getPrices(List<CoinItem> list) {
+
+            if(PricesTask == null) {
+                PricesTask= new GetCoinsPricesTask(CTWatchList.this, list);
+                PricesTask.execute((Void) null);
+            }
+
+
+    }
+
+
+    public void setCoinsPrice(String coinprices) {
+
+
+        StoredCoins.setCoinsPrices(coinprices);
+
+
+    }
 
 
 }

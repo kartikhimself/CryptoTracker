@@ -39,6 +39,7 @@
 
             android:weightSum="10"
             android:paddingBottom="8dp"
+           android:paddingRight="10dp"
             android:orientation="horizontal"
             android:id="@+id/coinDetails"
             android:layout_width="match_parent"
@@ -60,11 +61,14 @@
                />
 
            <TextView
+               android:id="@+id/coinPrice"
                android:layout_width="0dp"
                android:layout_weight="6"
                android:layout_height="wrap_content"
                android:singleLine="true"
                android:text=""
+               android:textColor="#000"
+               android:textSize="18dp"
                android:theme="@style/textStyle"
                android:textAlignment="textEnd"
                android:layout_gravity="end"

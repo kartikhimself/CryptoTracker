@@ -15,7 +15,6 @@ import Utilities.Util;
 public class GetCoinsListTask extends AsyncTask<Void,Void,String> {
 
      private CTSearchCoin activity;
-
      public GetCoinsListTask(CTSearchCoin activity) {
         this.activity = activity;
     }
@@ -25,12 +24,12 @@ public class GetCoinsListTask extends AsyncTask<Void,Void,String> {
     @Override
     protected String doInBackground(Void... voids) {
 
-        String offers = null;
+        String coins = null;
         HttpHandler sh = new HttpHandler();
         // Making a request to url and getting response
         String url = Util.BaseCOINLIST;
-        offers = sh.makeServiceCall(url,"GET");
-        return offers;
+        coins = sh.makeServiceCall(url,"GET");
+        return coins;
     }
 
 

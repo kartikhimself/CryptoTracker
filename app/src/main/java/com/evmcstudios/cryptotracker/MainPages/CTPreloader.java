@@ -40,7 +40,7 @@ public class CTPreloader extends AppCompatActivity {
            @Override
            public void run() {
 
-               Intent mainPage = new Intent(context, CTSearchCoin.class );
+               Intent mainPage = new Intent(context, CTWatchList.class );
                startActivity(mainPage);
                finish();
            }

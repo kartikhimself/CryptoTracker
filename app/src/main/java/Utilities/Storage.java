@@ -8,6 +8,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -127,6 +130,39 @@ public class Storage {
         }
 
         return canAdd;
+    }
+
+
+    public void setCoinsPrices(String prices) {
+
+        try {
+
+            JSONObject priceObj = new JSONObject(prices);
+
+            int i;
+            for(i = 0; i < savedCoinList.size(); i++) {
+                CoinItem tempCoin = savedCoinList.get(i);
+                String symbol = tempCoin.getSymbol().toString();
+                JSONObject priceArray = priceObj.getJSONObject(symbol);
+                String finalPrice = priceArray.getString(Util.CURRENCY);
+                tempCoin.setPrice(finalPrice);
+
+                Log.i(symbol + " : ", finalPrice);
+
+            }
+
+
+            saveCoinList();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
+
     }
 
 

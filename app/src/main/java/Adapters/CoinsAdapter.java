@@ -76,6 +76,7 @@ public class CoinsAdapter extends ArrayAdapter<CoinItem> implements Filterable {
             viewHolder.Title = (TextView) convertView.findViewById(R.id.coinName);
             viewHolder.Symbol = (TextView) convertView.findViewById(R.id.coinSymbol);
             viewHolder.Image = (ImageView) convertView.findViewById(R.id.coinImg);
+            viewHolder.Amount = (TextView) convertView.findViewById(R.id.coinPrice);
 
             result=convertView;
 
@@ -91,6 +92,11 @@ public class CoinsAdapter extends ArrayAdapter<CoinItem> implements Filterable {
         // set information
 
        viewHolder.Title.setText(coinItem.get(position).getTitle());
+
+       if(coinItem.get(position).getPrice() != null) {
+           viewHolder.Amount.setText(coinItem.get(position).getPrice());
+       }
+       
        viewHolder.Symbol.setText(coinItem.get(position).getSymbol());
        Picasso.with(mContext).load(coinItem.get(position).getImageUrl()).fit().centerCrop().into(viewHolder.Image);
 
