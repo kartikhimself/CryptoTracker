@@ -99,8 +99,8 @@ public class CTSearchCoin extends AppCompatActivity {
 
         // request focus
         coinSearchView.setFocusable(true);
-        coinSearchView.setIconified(false);
-        coinSearchView.requestFocusFromTouch();
+      //  coinSearchView.setIconified(false);
+       // coinSearchView.requestFocusFromTouch();
 
 
         // listen for Coin Click

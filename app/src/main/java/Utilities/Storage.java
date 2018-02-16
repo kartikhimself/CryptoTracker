@@ -2,6 +2,7 @@ package Utilities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -10,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import Adapters.CoinsAdapter;
 import Objects.CoinItem;
@@ -47,14 +49,23 @@ public class Storage {
 
     public void addCoin(CoinItem newCoin) {
 
-         savedCoinList.add(newCoin);
-         saveCoinList();
+         if(canBeAdded(newCoin)) {
+             savedCoinList.add(newCoin);
+             saveCoinList();
+         }
+         else {
+
+             Log.i("Duplicate: ", "Cannot be added");
+         }
 
     }
 
-    public void removeAllFroStaticList() {
+    public void removeAllFromStaticList() {
 
-        savedCoinList.clear();
+        if(savedCoinList != null) {
+            savedCoinList.clear();
+        }
+
     }
 
     public void saveCoinList() {
@@ -74,8 +85,12 @@ public class Storage {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.clear();
         editor.apply();
-        removeAllFroStaticList();
-        currentAdapter.clearCoins();
+        removeAllFromStaticList();
+
+        if(currentAdapter != null) {
+            currentAdapter.clearCoins();
+
+        }
 
 
     }
@@ -97,8 +112,21 @@ public class Storage {
         }
 
 
+    }
 
+    public boolean canBeAdded(CoinItem newCoin) {
 
+        Boolean canAdd = true;
+
+        int i;
+        for(i = 0; i < savedCoinList.size(); i++) {
+            String cid = savedCoinList.get(i).getID();
+            if(cid.equals(newCoin.getID())) {
+                canAdd = false;
+            }
+        }
+
+        return canAdd;
     }
 
 

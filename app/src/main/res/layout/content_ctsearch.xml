@@ -25,6 +25,7 @@
             android:id="@+id/search_view_field"
             android:queryHint="@string/search_coin"
             android:layout_width="match_parent"
+            android:iconifiedByDefault="false"
             android:layout_height="wrap_content">
 
         </SearchView>

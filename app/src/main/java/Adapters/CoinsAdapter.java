@@ -108,9 +108,20 @@ public class CoinsAdapter extends ArrayAdapter<CoinItem> implements Filterable {
 
     }
     public void clearCoins() {
-        coinItem.clear();
-        tempArray.clear();
+
+       if(coinItem != null) {
+           coinItem.clear();
+       }
+
+        if(tempArray != null) {
+
+            tempArray.clear();
+        }
+
+
         notifyDataSetChanged();
+
+
     }
 
     public void filterList(String text, CoinsAdapter adapter ) {
