@@ -7,11 +7,17 @@ import android.text.Html;
  */
 
 public class Util {
+
     public static String CURRENCY = "USD";
     public static String BaseURL = "https://www.cryptocompare.com";
     public static String BaseAPI = "https://min-api.cryptocompare.com/data/";
     public static String BaseCOINLIST = "https://min-api.cryptocompare.com/data/all/coinlist";
-    public static String BaseMULTICURRENCY = "https://min-api.cryptocompare.com/data/pricemulti?tsyms=USD&fsyms=";
+    public static String BaseMULTICURRENCY = "https://min-api.cryptocompare.com/data/pricemulti?tsyms="+ CURRENCY +"&fsyms=";
+
+
+    // text stuff
+
+    public static String NUMBERPATTERN = "###,###,###,###,###.############";
 
 
     public static String getPlainText(String html) {
@@ -19,6 +25,7 @@ public class Util {
         String temp;
         temp = Html.fromHtml(html).toString();;
         return temp;
+
 
     }
 

@@ -19,8 +19,9 @@ public class CoinItem implements Serializable {
     private transient JSONObject coin;
     private String COIN_ID;
     private String TITLE;
+    private String QUANTITY;
     private String SYMBOL;
-    private String PRICE;
+    private Double PRICE;
     private String IMAGE = "-";
 
 
@@ -63,15 +64,32 @@ public class CoinItem implements Serializable {
         return this.SYMBOL;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Double price) {
 
         this.PRICE = price;
 
     }
 
-    public String getPrice() {
+    public void setQuantity(String quantity) {
+
+        this.QUANTITY = quantity;
+    }
+
+    public Double getPrice() {
+
 
         return this.PRICE;
+
+    }
+
+    public String getQuantity(){
+        return this.QUANTITY;
+    }
+
+    public Double getTotalValue() {
+
+        Double value = Integer.parseInt(this.QUANTITY) * this.PRICE;
+        return value;
 
     }
 

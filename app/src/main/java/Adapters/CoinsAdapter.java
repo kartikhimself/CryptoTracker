@@ -15,11 +15,13 @@ import android.widget.Toast;
 import com.evmcstudios.cryptotracker.R;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import Objects.CoinItem;
+import Utilities.Util;
 
 /**
  * Created by Ultranova on 2/11/2018.
@@ -93,12 +95,20 @@ public class CoinsAdapter extends ArrayAdapter<CoinItem> implements Filterable {
 
        viewHolder.Title.setText(coinItem.get(position).getTitle());
 
-       if(coinItem.get(position).getPrice() != null) {
-           viewHolder.Amount.setText(coinItem.get(position).getPrice());
+       Double mValue = coinItem.get(position).getPrice();
+
+        DecimalFormat decimalFormatter = new DecimalFormat(Util.NUMBERPATTERN);
+        decimalFormatter.setMinimumFractionDigits(2);
+        decimalFormatter.setMaximumFractionDigits(15);
+
+       if(mValue != null) {
+
+           String fValue = "$" + decimalFormatter.format(mValue);
+           viewHolder.Amount.setText(fValue);
        }
        
-       viewHolder.Symbol.setText(coinItem.get(position).getSymbol());
-       Picasso.with(mContext).load(coinItem.get(position).getImageUrl()).fit().centerCrop().into(viewHolder.Image);
+         viewHolder.Symbol.setText(coinItem.get(position).getSymbol());
+          Picasso.with(mContext).load(coinItem.get(position).getImageUrl()).fit().centerCrop().into(viewHolder.Image);
 
         // Return the completed view to render on screen
         return convertView;

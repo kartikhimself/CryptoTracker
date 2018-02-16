@@ -51,7 +51,6 @@ public class CoinBucket implements Serializable {
                     String key = (String)keys.next();
                     if ( coinsArray.get(key) instanceof JSONObject ) {
                         // do what ever you want with the JSONObject.....
-
                         CoinItem tempItem = new CoinItem(coinsArray.getJSONObject(key));
                         CoinList.add(tempItem);
 

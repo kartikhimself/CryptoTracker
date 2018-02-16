@@ -139,16 +139,16 @@ public class Storage {
 
             JSONObject priceObj = new JSONObject(prices);
 
-
             int i;
             for(i = 0; i < savedCoinList.size(); i++) {
+
                 CoinItem tempCoin = savedCoinList.get(i);
                 String symbol = tempCoin.getSymbol();
                 JSONObject priceArray = priceObj.getJSONObject(symbol);
-                String finalPrice = priceArray.getString(Util.CURRENCY);
-                tempCoin.setPrice(finalPrice);
+                Double finalPrice = priceArray.getDouble(Util.CURRENCY);
 
-                Log.i(symbol + " : ", finalPrice);
+                tempCoin.setPrice(finalPrice);
+                Log.i(symbol + " : ", "" + finalPrice);
 
             }
 
