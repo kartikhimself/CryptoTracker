@@ -63,7 +63,7 @@ public class GetCoinsPricesTask extends AsyncTask<Void,Void,String> {
 
 
         // Making a request to url and getting response
-        String url = Util.BaseMULTICURRENCY;
+        String url = Util.BaseMULTICURRENCY + symbols;
         coins = sh.makeServiceCall(url,"GET");
         return coins;
 

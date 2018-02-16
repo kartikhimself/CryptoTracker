@@ -181,7 +181,7 @@ public class CTWatchList extends AppCompatActivity{
 
       if(mainCoinsAdapter == null) {
 
-        mainCoinsAdapter = new CoinsAdapter(getApplicationContext(), newArr);
+        mainCoinsAdapter = new CoinsAdapter(getApplicationContext(), (ArrayList<CoinItem>) StoredCoins.getCoinList());
         MainCoinListView.setAdapter(mainCoinsAdapter);
         mainCoinsAdapter.notifyDataSetChanged();
 
@@ -218,7 +218,7 @@ public class CTWatchList extends AppCompatActivity{
     public void setCoinsPrice(String coinprices) {
 
 
-        StoredCoins.setCoinsPrices(coinprices);
+        StoredCoins.setCoinsPrices(coinprices, mainCoinsAdapter);
 
 
     }
