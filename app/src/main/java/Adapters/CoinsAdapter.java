@@ -98,6 +98,20 @@ public class CoinsAdapter extends ArrayAdapter<CoinItem> implements Filterable {
         return convertView;
     }
 
+    public void updateCoins(List<CoinItem> coins) {
+
+        coinItem.clear();
+        tempArray.clear();
+        coinItem.addAll(coins);
+        tempArray.addAll(coins);
+        notifyDataSetChanged();
+
+    }
+    public void clearCoins() {
+        coinItem.clear();
+        tempArray.clear();
+        notifyDataSetChanged();
+    }
 
     public void filterList(String text, CoinsAdapter adapter ) {
 
@@ -106,7 +120,6 @@ public class CoinsAdapter extends ArrayAdapter<CoinItem> implements Filterable {
 
 
         coinItem.clear();
-
 
 
         if(charSet.length() == 0){

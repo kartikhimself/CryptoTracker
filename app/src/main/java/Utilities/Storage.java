@@ -3,70 +3,101 @@ package Utilities;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+
+import Adapters.CoinsAdapter;
+import Objects.CoinItem;
+
 /**
  * Created by Ultranova on 2/11/2018.
  */
 
 public class Storage {
 
-    public static final String STORAGEPS = "CoinStorage";
-    public static final String COOKIE = "CoinKey";
-    public static final String COINACCOUNT = "CoinListKey";
-    public String savedCookie = "";
-    public String savedAccount = "";
+    private static final String STORAGECT = "CoinStorage";
+    private ArrayList<CoinItem> savedCoinList = null;
+    public static final String COINLIST = "CoinListKey";
     private Context context;
     SharedPreferences sharedpreferences;
 
     public Storage(Context context) {
         this.context = context;
+        this.savedCoinList = new ArrayList<CoinItem>();
+
+        initArray();
+    }
+
+    public void initArray() {
+
+        List<CoinItem> savedList =  new ArrayList<>();
+
+      if(getCoinList() != null) {
+          savedList = getCoinList();
+          savedCoinList.addAll(savedList);
+      }
+
     }
 
 
+    public void addCoin(CoinItem newCoin) {
 
-    public void saveCookie(String mCookie) {
+         savedCoinList.add(newCoin);
+         saveCoinList();
 
-        sharedpreferences = context.getSharedPreferences(STORAGEPS, Context.MODE_PRIVATE);
+    }
+
+    public void removeAllFroStaticList() {
+
+        savedCoinList.clear();
+    }
+
+    public void saveCoinList() {
+
+        // stringify json
+        String coinJSONList = new Gson().toJson(savedCoinList);
+        sharedpreferences = context.getSharedPreferences(STORAGECT, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putString(COOKIE, mCookie);
+        editor.putString(COINLIST,coinJSONList);
         editor.apply();
 
-
     }
 
-    public void saveUserAccount(String mAccount) {
+    public void clearCoins(CoinsAdapter currentAdapter){
 
-        sharedpreferences = context.getSharedPreferences(STORAGEPS, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putString(COINACCOUNT, mAccount);
-        editor.apply();
-
-
-    }
-
-    public void clearCookie(){
-
-        sharedpreferences = context.getSharedPreferences(STORAGEPS, Context.MODE_PRIVATE);
+        sharedpreferences = context.getSharedPreferences(STORAGECT, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.clear();
         editor.apply();
+        removeAllFroStaticList();
+        currentAdapter.clearCoins();
+
 
     }
 
-    public String getCookie() {
+    public List<CoinItem> getCoinList() {
 
-        sharedpreferences = context.getSharedPreferences(STORAGEPS, Context.MODE_PRIVATE);
-        savedCookie = sharedpreferences.getString(COOKIE,"");
+        sharedpreferences = context.getSharedPreferences(STORAGECT, Context.MODE_PRIVATE);
+        String coinJSONList = sharedpreferences.getString(COINLIST,"");
+        Type type = new TypeToken<List<CoinItem>>(){}.getType();
 
-        return savedCookie;
+        List<CoinItem> newCoinList = new ArrayList<>();
+        newCoinList =  new Gson().fromJson(coinJSONList, type );
 
-    }
+        if(newCoinList != null) {
+            return newCoinList;
+        }
+        else {
+            return null;
+        }
 
-    public String getUserAccount() {
 
-        sharedpreferences = context.getSharedPreferences(STORAGEPS, Context.MODE_PRIVATE);
-        savedAccount = sharedpreferences.getString(COINACCOUNT,"");
 
-        return savedAccount;
 
     }
 

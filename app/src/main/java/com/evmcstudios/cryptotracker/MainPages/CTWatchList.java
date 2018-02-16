@@ -17,10 +17,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.evmcstudios.cryptotracker.R;
 
+import java.util.ArrayList;
+
+import Adapters.CoinsAdapter;
 import Objects.CoinItem;
+import Utilities.Storage;
 
 /**
  * Created by edwardvalerio on 2/14/2018.
@@ -28,10 +34,29 @@ import Objects.CoinItem;
 
 public class CTWatchList extends AppCompatActivity{
 
+
+    public Storage StoredCoins = null;
+    private CoinsAdapter mainCoinsAdapter = null;
+    private ListView MainCoinListView;
+    private ArrayList<CoinItem> currentCoins;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ct_watchlist_page);
+
+        // list view for coins
+
+        MainCoinListView = (ListView) findViewById(R.id.mainCoinsListView);
+
+        // stored coins
+
+        StoredCoins = new Storage(getApplicationContext());
+
+
+
+        setWatchList();
 
         // toolbar stuff
 
@@ -48,10 +73,28 @@ public class CTWatchList extends AppCompatActivity{
                 Intent searchCoin = new Intent(getApplicationContext(), CTSearchCoin.class);
                 startActivityForResult(searchCoin, 1);
 
-               // Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
 
             }
         });
+
+
+        FloatingActionButton DeleteCoins = (FloatingActionButton) findViewById(R.id.clear_action);
+        DeleteCoins.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+
+                  StoredCoins.clearCoins(mainCoinsAdapter);
+                  Snackbar.make(view, "Deleted coins", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
+
+
+
+            }
+        });
+
 
     }
 
@@ -65,9 +108,12 @@ public class CTWatchList extends AppCompatActivity{
 
                 Snackbar.make(findViewById(R.id.action_search), finalCoin.getTitle(), Snackbar.LENGTH_LONG).setAction("Coin", null).show();
 
+                StoredCoins.addCoin(finalCoin);
+
+                setWatchList();
 
 
-                Log.i("IMGURL", finalCoin.getImageUrl());
+
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
@@ -98,21 +144,10 @@ public class CTWatchList extends AppCompatActivity{
             @Override
             public boolean onQueryTextChange(String newText) {
 
-
-
-
                // coinsAdapter.filterList(newText, coinsAdapter);
-
-
-
                 return true;
             }
         });
-
-
-
-
-
 
         return true;
     }
@@ -133,6 +168,33 @@ public class CTWatchList extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
+
+
+    public void setWatchList() {
+
+
+   if(StoredCoins.getCoinList() != null) {
+
+     ArrayList<CoinItem> newArr = new ArrayList<>();
+     newArr.addAll(StoredCoins.getCoinList());
+
+    if(mainCoinsAdapter == null) {
+        mainCoinsAdapter = new CoinsAdapter(getApplicationContext(), newArr);
+        MainCoinListView.setAdapter(mainCoinsAdapter);
+        mainCoinsAdapter.notifyDataSetChanged();
+    }
+
+    else {
+
+        mainCoinsAdapter.updateCoins(StoredCoins.getCoinList());
+
+
+    }
+
+
+        }
+
+    }
 
 
 
