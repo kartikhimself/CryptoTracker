@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -86,12 +87,8 @@ public class CTWatchList extends AppCompatActivity{
             public void onClick(View view) {
 
 
-
                   StoredCoins.clearCoins(mainCoinsAdapter);
                   Snackbar.make(view, "Deleted coins", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-
-
-
 
             }
         });
@@ -103,23 +100,36 @@ public class CTWatchList extends AppCompatActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+
+         // search for coin
         if (requestCode == 1) {
             if(resultCode == Activity.RESULT_OK){
                 CoinItem finalCoin = (CoinItem) data.getSerializableExtra("SelectedCoin");
-
-                Snackbar.make(findViewById(R.id.action_search), finalCoin.getTitle(), Snackbar.LENGTH_LONG).setAction("Coin", null).show();
-
                 StoredCoins.addCoin(finalCoin);
-
                 setWatchList();
-
-
-
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
             }
         }
+
+
+        // updated coin
+
+        if (requestCode == 2) {
+            if(resultCode == Activity.RESULT_OK){
+                CoinItem finalCoin = (CoinItem) data.getSerializableExtra("SelectedCoin");
+                StoredCoins.updateCoin(finalCoin);
+                setWatchList();
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+
+
+
+
     }
 
     @Override
@@ -180,26 +190,50 @@ public class CTWatchList extends AppCompatActivity{
      newArr.addAll(StoredCoins.getCoinList());
 
       if(mainCoinsAdapter == null) {
-
         mainCoinsAdapter = new CoinsAdapter(getApplicationContext(), (ArrayList<CoinItem>) StoredCoins.getCoinList());
         MainCoinListView.setAdapter(mainCoinsAdapter);
         mainCoinsAdapter.notifyDataSetChanged();
-
           }
       else {
-
         mainCoinsAdapter.updateCoins(StoredCoins.getCoinList());
-
           }
 
+      getPrices(StoredCoins.getCoinList());
 
-        getPrices(StoredCoins.getCoinList());
+
+         // listeners
+
+
+       MainCoinListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+           @Override
+           public void onItemClick(AdapterView<?> parent, View view,
+                                   int position, long id) {
+
+
+
+
+               Intent updateCoin = new Intent(getApplicationContext(), CTCoinDetails.class);
+               CoinItem selectedCoin = StoredCoins.getCoinList().get(position);
+               updateCoin.putExtra("SelectedCoin", selectedCoin);
+
+               startActivityForResult(updateCoin, 2);
+
+
+
+           }
+
+       });
+
+
+
 
 
 
 
 
         }
+
 
     }
 

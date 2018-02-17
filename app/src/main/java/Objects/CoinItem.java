@@ -19,9 +19,9 @@ public class CoinItem implements Serializable {
     private transient JSONObject coin;
     private String COIN_ID;
     private String TITLE;
-    private String QUANTITY;
+    private String QUANTITY = "0";
     private String SYMBOL;
-    private Double PRICE;
+    private Double PRICE = Double.parseDouble("0");
     private String IMAGE = "-";
 
 
@@ -76,7 +76,6 @@ public class CoinItem implements Serializable {
     }
 
     public Double getPrice() {
-
 
         return this.PRICE;
 

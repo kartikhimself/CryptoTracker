@@ -5,6 +5,7 @@
     <!-- PAGES -->
     <string name="app_watchlist">Watch list</string>
     <string name="app_search_coin">Coin list</string>
+    <string name="app_details_coin">Coin details</string>
     <string name="app_news">News</string>
 
     <!-- COIN DETAILS -->

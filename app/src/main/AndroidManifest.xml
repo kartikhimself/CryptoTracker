@@ -55,12 +55,20 @@
             >
 
 
-
         </activity>
 
+        <!-- Coins Details Page -->
+        <activity
+            android:parentActivityName=".MainPages.CTWatchList"
+            android:launchMode="singleTop"
+            android:name=".MainPages.CTCoinDetails"
+            android:label="@string/app_details_coin"
+            android:theme="@style/AppTheme.NoActionBar">
 
-
-
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainPages.CTWatchList" />
+        </activity>
 
 
 

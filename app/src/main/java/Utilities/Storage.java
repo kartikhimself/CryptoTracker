@@ -63,6 +63,29 @@ public class Storage {
 
     }
 
+    public void updateCoin(CoinItem newCoin) {
+
+
+          int i;
+          for(i = 0; i < savedCoinList.size(); i++) {
+          String cid = savedCoinList.get(i).getID();
+          if(cid.equals(newCoin.getID())) {
+
+              savedCoinList.set(i,newCoin);
+
+            }
+          }
+
+
+         saveCoinList();
+
+
+
+
+
+    }
+
+
     public void removeAllFromStaticList() {
 
         if(savedCoinList != null) {

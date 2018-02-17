@@ -38,6 +38,8 @@ public class CoinsAdapter extends ArrayAdapter<CoinItem> implements Filterable {
         TextView Title;
         TextView Amount;
         TextView Symbol;
+        TextView Quantity;
+        TextView Total;
         ImageView Image;
     }
 
@@ -79,6 +81,8 @@ public class CoinsAdapter extends ArrayAdapter<CoinItem> implements Filterable {
             viewHolder.Symbol = (TextView) convertView.findViewById(R.id.coinSymbol);
             viewHolder.Image = (ImageView) convertView.findViewById(R.id.coinImg);
             viewHolder.Amount = (TextView) convertView.findViewById(R.id.coinPrice);
+            viewHolder.Total = (TextView) convertView.findViewById(R.id.coinBalance);
+            viewHolder.Quantity = (TextView) convertView.findViewById(R.id.coinQuantity);
 
             result=convertView;
 
@@ -97,18 +101,25 @@ public class CoinsAdapter extends ArrayAdapter<CoinItem> implements Filterable {
 
        Double mValue = coinItem.get(position).getPrice();
 
-        DecimalFormat decimalFormatter = new DecimalFormat(Util.NUMBERPATTERN);
-        decimalFormatter.setMinimumFractionDigits(2);
-        decimalFormatter.setMaximumFractionDigits(15);
-
        if(mValue != null) {
-
-           String fValue = "$" + decimalFormatter.format(mValue);
+           String fValue = "$" + Util.getFormattedNumber(mValue);
            viewHolder.Amount.setText(fValue);
        }
-       
-         viewHolder.Symbol.setText(coinItem.get(position).getSymbol());
-          Picasso.with(mContext).load(coinItem.get(position).getImageUrl()).fit().centerCrop().into(viewHolder.Image);
+
+        Double mBalance = coinItem.get(position).getTotalValue();
+
+        if(mBalance != null) {
+            String fValue = "$" + Util.getFormattedNumber(mBalance);
+            viewHolder.Total.setText(fValue);
+        }
+
+
+        String symbol = "(" + coinItem.get(position).getSymbol() + ")";
+        viewHolder.Symbol.setText(symbol);
+
+        String tempQ = "x: " + coinItem.get(position).getQuantity();
+        viewHolder.Quantity.setText(tempQ);
+        Picasso.with(mContext).load(coinItem.get(position).getImageUrl()).fit().centerCrop().into(viewHolder.Image);
 
         // Return the completed view to render on screen
         return convertView;
