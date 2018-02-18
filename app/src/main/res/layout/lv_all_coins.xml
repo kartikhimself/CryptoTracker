@@ -135,7 +135,7 @@
                android:layout_height="wrap_content"
                android:singleLine="true"
                android:text=""
-               android:textColor="#009f50"
+               android:textColor="@color/colorPrimaryDark"
                android:textSize="16dp"
                android:theme="@style/textStyle"
                android:textAlignment="textEnd"
