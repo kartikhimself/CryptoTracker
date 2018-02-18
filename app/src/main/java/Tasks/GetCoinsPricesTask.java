@@ -58,8 +58,6 @@ public class GetCoinsPricesTask extends AsyncTask<Void,Void,String> {
 
         }
 
-        Log.i("Symbols: " , symbols);
-
 
 
         // Making a request to url and getting response

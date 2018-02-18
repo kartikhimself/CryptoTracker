@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.evmcstudios.cryptotracker.R;
 import com.squareup.picasso.Picasso;
@@ -51,9 +52,14 @@ public class CTCoinDetails extends AppCompatActivity {
         selectedCoin =  (CoinItem) bundle.getSerializable("SelectedCoin");
 
 
+        // set Title
+
+        this.setTitle(selectedCoin.getTitle() + " details");
+
         // set the views
 
         ImageView mainImage = findViewById(R.id.coin_image);
+
 
 
         // load image
@@ -62,7 +68,7 @@ public class CTCoinDetails extends AppCompatActivity {
         quantity = findViewById(R.id.quantity);
         updatebtn = findViewById(R.id.update_btn);
 
-         quantity.setText(selectedCoin.getQuantity());
+        quantity.setText(selectedCoin.getQuantity());
 
 
 
@@ -87,10 +93,14 @@ public class CTCoinDetails extends AppCompatActivity {
 
     public void updateCoin(EditText quantity) {
 
-
         String value = quantity.getText().toString();
 
-        Snackbar.make(findViewById(R.id.coin_image) , value, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+        if(value.equals("")) {
+            value = "0";
+        }
+
+
+
 
         selectedCoin.setQuantity(value);
 
@@ -99,6 +109,10 @@ public class CTCoinDetails extends AppCompatActivity {
         returnIntent.putExtra("SelectedCoin", selectedCoin);
         setResult(Activity.RESULT_OK,returnIntent);
         finish();
+
+
+
+
 
 
     }

@@ -13,7 +13,8 @@
 
     <!-- FIELD TEXT -->
     <string name="search_coin">Search coin...</string>
-    <string name="portfolio_balance">$28,000</string>
+    <string name="portfolio_balance">$0</string>
+    <string name="portfolio_title">PORTFOLIO BALANCE</string>
 
 
 

@@ -10,21 +10,30 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.evmcstudios.cryptotracker.R;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import Adapters.CoinsAdapter;
 import Objects.CoinItem;
@@ -41,8 +50,11 @@ public class CTWatchList extends AppCompatActivity{
     public Storage StoredCoins = null;
     private CoinsAdapter mainCoinsAdapter = null;
     private ListView MainCoinListView;
-    private ArrayList<CoinItem> currentCoins;
+    private TextView Balance;
+    private SwipeRefreshLayout refreshLayout;
+
     public GetCoinsPricesTask PricesTask = null;
+
 
 
     @Override
@@ -50,9 +62,28 @@ public class CTWatchList extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ct_watchlist_page);
 
-        // list view for coins
+        // balance
+
+        Balance = findViewById(R.id.portfolio_balance);
+
+        // list view & refresh for coins
 
         MainCoinListView = (ListView) findViewById(R.id.mainCoinsListView);
+        registerForContextMenu(MainCoinListView);
+        refreshLayout = findViewById(R.id.refresh_layout);
+
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                                               @Override
+                                               public void onRefresh() {
+
+                                                   setWatchList();
+                                               }
+
+                                           });
+
+        refreshLayout.setColorSchemeResources(R.color.colorPrimaryDark,R.color.colorAccent,R.color.colorAccent);
+
 
         // stored coins
 
@@ -65,17 +96,19 @@ public class CTWatchList extends AppCompatActivity{
          Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_watch);
          setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+
 
         FloatingActionButton SearchStart = (FloatingActionButton) findViewById(R.id.search_action);
         SearchStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-
                 Intent searchCoin = new Intent(getApplicationContext(), CTSearchCoin.class);
                 startActivityForResult(searchCoin, 1);
-
-
 
             }
         });
@@ -87,7 +120,7 @@ public class CTWatchList extends AppCompatActivity{
             public void onClick(View view) {
 
 
-                  StoredCoins.clearCoins(mainCoinsAdapter);
+                  StoredCoins.clearCoins(mainCoinsAdapter,Balance);
                   Snackbar.make(view, "Deleted coins", Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
             }
@@ -181,8 +214,70 @@ public class CTWatchList extends AppCompatActivity{
 
 
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if (v.getId()==R.id.mainCoinsListView) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.list_view_menu, menu);
+        }
+
+    }
+
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch(item.getItemId()) {
+
+            case R.id.action_edit:
+
+                editCoinAt(info.position);
+
+                return true;
+            case R.id.action_delete:
+
+                deleteCointAt(info.position);
+                setWatchList();
+
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+
+    @Override
+    public boolean onMenuOpened(int featureId, Menu menu)
+    {
+        if(featureId == Window.FEATURE_ACTION_BAR && menu != null){
+            if(menu.getClass().getSimpleName().equals("MenuBuilder")){
+                try{
+                    Method m = menu.getClass().getDeclaredMethod(
+                            "setOptionalIconsVisible", Boolean.TYPE);
+                    m.setAccessible(true);
+                    m.invoke(menu, true);
+                }
+                catch(NoSuchMethodException e){
+                    Log.e("Menu", "onMenuOpened", e);
+                }
+                catch(Exception e){
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return super.onMenuOpened(featureId, menu);
+    }
+
+
+
+
+
+
     public void setWatchList() {
 
+
+        refreshLayout.setRefreshing(true);
 
    if(StoredCoins.getCoinList() != null) {
 
@@ -210,20 +305,14 @@ public class CTWatchList extends AppCompatActivity{
            public void onItemClick(AdapterView<?> parent, View view,
                                    int position, long id) {
 
-
-
-
-               Intent updateCoin = new Intent(getApplicationContext(), CTCoinDetails.class);
-               CoinItem selectedCoin = StoredCoins.getCoinList().get(position);
-               updateCoin.putExtra("SelectedCoin", selectedCoin);
-
-               startActivityForResult(updateCoin, 2);
-
-
+                editCoinAt(position);
 
            }
 
        });
+
+
+
 
 
 
@@ -251,11 +340,58 @@ public class CTWatchList extends AppCompatActivity{
 
     public void setCoinsPrice(String coinprices) {
 
+        StoredCoins.setCoinsPrices(coinprices, mainCoinsAdapter, Balance );
 
-        StoredCoins.setCoinsPrices(coinprices, mainCoinsAdapter);
+
+        delayeRefresh(refreshLayout);
 
 
     }
+
+    public void editCoinAt(int position) {
+
+        Intent updateCoin = new Intent(getApplicationContext(), CTCoinDetails.class);
+        CoinItem selectedCoin = StoredCoins.getCoinList().get(position);
+        updateCoin.putExtra("SelectedCoin", selectedCoin);
+
+        startActivityForResult(updateCoin, 2);
+
+    }
+
+    public void deleteCointAt(int position) {
+
+        StoredCoins.deleteCoin(position);
+
+    }
+
+    public void delayeRefresh(final SwipeRefreshLayout refresher) {
+
+        Timer time = new Timer();
+
+        TimerTask action = new TimerTask() {
+            @Override
+            public void run() {
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        refresher.setRefreshing(false);
+
+                    }
+                });
+
+
+
+            }
+        };
+
+        time.schedule(action, 1000);
+
+
+    }
+
+
 
 
 }

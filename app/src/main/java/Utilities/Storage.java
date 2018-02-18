@@ -3,6 +3,7 @@ package Utilities;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -63,6 +64,12 @@ public class Storage {
 
     }
 
+    public void deleteCoin(int position) {
+
+        savedCoinList.remove(position);
+        saveCoinList();
+    }
+
     public void updateCoin(CoinItem newCoin) {
 
 
@@ -105,7 +112,7 @@ public class Storage {
 
     }
 
-    public void clearCoins(CoinsAdapter currentAdapter){
+    public void clearCoins(CoinsAdapter currentAdapter, TextView balance){
 
         sharedpreferences = context.getSharedPreferences(STORAGECT, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
@@ -115,8 +122,9 @@ public class Storage {
 
         if(currentAdapter != null) {
             currentAdapter.clearCoins();
-
         }
+
+        setPortfolioBalance(balance);
 
 
     }
@@ -156,11 +164,13 @@ public class Storage {
     }
 
 
-    public void setCoinsPrices(String prices, CoinsAdapter adapter) {
+    public void setCoinsPrices(String prices, CoinsAdapter adapter, TextView balance) {
 
         try {
 
             JSONObject priceObj = new JSONObject(prices);
+
+
 
             int i;
             for(i = 0; i < savedCoinList.size(); i++) {
@@ -169,15 +179,16 @@ public class Storage {
                 String symbol = tempCoin.getSymbol();
                 JSONObject priceArray = priceObj.getJSONObject(symbol);
                 Double finalPrice = priceArray.getDouble(Util.CURRENCY);
-
                 tempCoin.setPrice(finalPrice);
-                Log.i(symbol + " : ", "" + finalPrice);
+
+
 
             }
 
 
-            saveCoinList();
+            setPortfolioBalance(balance);
 
+            saveCoinList();
             adapter.updateCoins(savedCoinList);
 
         } catch (JSONException e) {
@@ -185,9 +196,25 @@ public class Storage {
         }
 
 
+    }
 
 
+    public void setPortfolioBalance(TextView balance) {
 
+        Double totalBalance = 0.0;
+
+
+        int i;
+        for(i = 0; i < savedCoinList.size(); i++) {
+
+            CoinItem tempCoin = savedCoinList.get(i);
+            totalBalance += tempCoin.getTotalValue();
+
+        }
+
+        String val = "$" + Util.getFormattedNumber(totalBalance);
+
+        balance.setText(val);
 
     }
 

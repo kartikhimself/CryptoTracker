@@ -24,6 +24,7 @@ import android.widget.SearchView;
 import com.evmcstudios.cryptotracker.R;
 
 import Adapters.CoinsAdapter;
+import Adapters.CoinsSelectAdapter;
 import Objects.CoinBucket;
 import Objects.CoinItem;
 import Tasks.GetCoinsListTask;
@@ -31,7 +32,7 @@ import Tasks.GetCoinsListTask;
 public class CTSearchCoin extends AppCompatActivity {
 
     public GetCoinsListTask CoinListTask = null;
-    private CoinsAdapter coinsAdapter;
+    private CoinsSelectAdapter coinsAdapter;
     private ListView coinListView;
     private LinearLayout progressBarLayout;
     private SearchView coinSearchView;
@@ -77,7 +78,7 @@ public class CTSearchCoin extends AppCompatActivity {
     public void setCoins(String coins) {
 
         final CoinBucket coin_bucket =  new CoinBucket(coins);
-        coinsAdapter = new CoinsAdapter(getApplicationContext(), coin_bucket.getCoinList());
+        coinsAdapter = new CoinsSelectAdapter(getApplicationContext(), coin_bucket.getCoinList());
         coinListView.setAdapter(coinsAdapter);
         showProgress(false);
 

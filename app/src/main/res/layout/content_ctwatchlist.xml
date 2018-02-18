@@ -12,7 +12,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="60dp"
+
         >
 
         <LinearLayout
@@ -20,33 +20,57 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:paddingTop="10dp"
             android:background="@color/colorAccent"
             >
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/portfolio_title"
+    android:textColor="#fff"
+    android:textSize="11sp"
+    android:gravity="center_horizontal"
+    android:layout_gravity="center_horizontal"
+
+    />
 
             <TextView
                 android:text="@string/portfolio_balance"
-                android:id="@+id/portfolio_amount"
+                android:id="@+id/portfolio_balance"
                 android:textColor="#fff"
-                android:textSize="28dp"
+                android:textSize="30dp"
                 android:gravity="center_horizontal|center_vertical"
                 android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:paddingTop="0dp"
+                android:textStyle="bold"
+                android:paddingBottom="8dp"
                 />
 
         </LinearLayout>
 
 
+<android.support.v4.widget.SwipeRefreshLayout
+    android:layout_below="@+id/balance_container"
+    android:layout_width="match_parent"
+    android:id="@+id/refresh_layout"
+    android:layout_height="match_parent">
+
+
 
             <ListView
 
-                android:layout_below="@+id/balance_container"
+
                 android:id="@+id/mainCoinsListView"
                 android:layout_width="match_parent"
+                android:paddingBottom="80dp"
+                android:clipToPadding="false"
                 android:layout_height="wrap_content">
 
             </ListView>
+
+</android.support.v4.widget.SwipeRefreshLayout>
 
 
         <LinearLayout

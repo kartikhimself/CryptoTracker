@@ -87,8 +87,8 @@ public class CoinItem implements Serializable {
 
     public Double getTotalValue() {
 
-        Double value = Integer.parseInt(this.QUANTITY) * this.PRICE;
-        return value;
+       Double value = Integer.parseInt(this.QUANTITY) * this.PRICE;
+       return value;
 
     }
 
