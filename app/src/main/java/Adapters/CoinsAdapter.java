@@ -226,7 +226,7 @@ public class CoinsAdapter extends ArrayAdapter<CoinItem> implements Filterable {
                     }
                 });
 
-                Log.i("Condition ", "" + condition);
+
 
 
 
@@ -238,14 +238,14 @@ public class CoinsAdapter extends ArrayAdapter<CoinItem> implements Filterable {
                 Collections.sort(coinItem, new Comparator<CoinItem>(){
                     @Override
                     public int compare(CoinItem o1, CoinItem o2) {
-                        return  ((Integer.parseInt(o2.getQuantity()) - Integer.parseInt(o1.getQuantity())));
+                        return (int)((Double.parseDouble(o2.getQuantity()) - Double.parseDouble(o1.getQuantity())));
                     }
                 });
 
                 Collections.sort(tempArray, new Comparator<CoinItem>(){
                     @Override
                     public int compare(CoinItem o1, CoinItem o2) {
-                        return  ((Integer.parseInt(o2.getQuantity()) - Integer.parseInt(o1.getQuantity())));
+                        return (int)((Double.parseDouble(o2.getQuantity()) - Double.parseDouble(o1.getQuantity())));
                     }
                 });
 
