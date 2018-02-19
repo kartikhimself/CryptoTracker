@@ -72,6 +72,22 @@
 
 
 
+        <!-- About Page -->
+        <activity
+            android:parentActivityName=".MainPages.CTWatchList"
+            android:launchMode="singleTop"
+            android:name=".MainPages.CTAbout"
+            android:label="@string/app_about"
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainPages.CTWatchList" />
+        </activity>
+
+
+
+
     </application>
 
 </manifest>

@@ -17,6 +17,8 @@ import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -125,13 +127,15 @@ public class CoinsAdapter extends ArrayAdapter<CoinItem> implements Filterable {
         return convertView;
     }
 
-    public void updateCoins(List<CoinItem> coins) {
+    public void updateCoins(List<CoinItem> coins, Integer condition) {
 
         coinItem.clear();
         tempArray.clear();
         coinItem.addAll(coins);
         tempArray.addAll(coins);
-        notifyDataSetChanged();
+
+        sortTheCoins(condition);
+
 
     }
     public void clearCoins() {
@@ -193,5 +197,86 @@ public class CoinsAdapter extends ArrayAdapter<CoinItem> implements Filterable {
     }
 
 
+    public List<CoinItem> getAdapterCoinList() {
+        return this.coinItem;
+    }
+
+    public void sortTheCoins(Integer condition) {
+
+
+
+
+        switch (condition) {
+
+
+            // by price value
+            case 0:
+
+                Collections.sort(coinItem, new Comparator<CoinItem>(){
+                    @Override
+                    public int compare(CoinItem o1, CoinItem o2) {
+                        return (int)((o2.getPrice() - o1.getPrice()));
+                    }
+                });
+
+                Collections.sort(tempArray, new Comparator<CoinItem>(){
+                    @Override
+                    public int compare(CoinItem o1, CoinItem o2) {
+                        return (int)((o2.getPrice() - o1.getPrice()));
+                    }
+                });
+
+                Log.i("Condition ", "" + condition);
+
+
+
+                break;
+
+            // by quantity owned
+            case 1:
+
+                Collections.sort(coinItem, new Comparator<CoinItem>(){
+                    @Override
+                    public int compare(CoinItem o1, CoinItem o2) {
+                        return  ((Integer.parseInt(o2.getQuantity()) - Integer.parseInt(o1.getQuantity())));
+                    }
+                });
+
+                Collections.sort(tempArray, new Comparator<CoinItem>(){
+                    @Override
+                    public int compare(CoinItem o1, CoinItem o2) {
+                        return  ((Integer.parseInt(o2.getQuantity()) - Integer.parseInt(o1.getQuantity())));
+                    }
+                });
+
+
+
+                break;
+
+            // by value onwned
+            case 2:
+
+                Collections.sort(coinItem, new Comparator<CoinItem>(){
+                    @Override
+                    public int compare(CoinItem o1, CoinItem o2) {
+                        return (int)((o2.getTotalValue() - o1.getTotalValue()));
+                    }
+                });
+
+                Collections.sort(tempArray, new Comparator<CoinItem>(){
+                    @Override
+                    public int compare(CoinItem o1, CoinItem o2) {
+                        return (int)((o2.getTotalValue() - o1.getTotalValue()));
+                    }
+                });
+
+                break;
+
+
+        }
+
+
+        notifyDataSetChanged();
+    }
 
 }

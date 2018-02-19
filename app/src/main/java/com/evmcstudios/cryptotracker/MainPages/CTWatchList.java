@@ -15,12 +15,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.SparseBooleanArray;
+import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -38,6 +41,7 @@ import java.util.TimerTask;
 import Adapters.CoinsAdapter;
 import Objects.CoinItem;
 import Tasks.GetCoinsPricesTask;
+import Utilities.Sorting;
 import Utilities.Storage;
 
 /**
@@ -69,10 +73,16 @@ public class CTWatchList extends AppCompatActivity{
         // list view & refresh for coins
 
         MainCoinListView = (ListView) findViewById(R.id.mainCoinsListView);
+        MainCoinListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        MainCoinListView.setItemsCanFocus(false);
         registerForContextMenu(MainCoinListView);
+
+        setListViewListeners();
+
+
+
+
         refreshLayout = findViewById(R.id.refresh_layout);
-
-
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                                                @Override
                                                public void onRefresh() {
@@ -97,7 +107,7 @@ public class CTWatchList extends AppCompatActivity{
          setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+        getSupportActionBar().setIcon(R.mipmap.logo_plain_no_effect);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
@@ -188,7 +198,7 @@ public class CTWatchList extends AppCompatActivity{
             @Override
             public boolean onQueryTextChange(String newText) {
 
-               // coinsAdapter.filterList(newText, coinsAdapter);
+                mainCoinsAdapter.filterList(newText, mainCoinsAdapter);
                 return true;
             }
         });
@@ -205,8 +215,18 @@ public class CTWatchList extends AppCompatActivity{
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_about) {
+
+            Intent aboutUs = new Intent(getApplicationContext(), CTAbout.class);
+            startActivity(aboutUs);
             return true;
+        }
+
+        if(id == R.id.action_sort) {
+
+
+            Sorting sort = new Sorting(CTWatchList.this);
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -247,31 +267,6 @@ public class CTWatchList extends AppCompatActivity{
     }
 
 
-    @Override
-    public boolean onMenuOpened(int featureId, Menu menu)
-    {
-        if(featureId == Window.FEATURE_ACTION_BAR && menu != null){
-            if(menu.getClass().getSimpleName().equals("MenuBuilder")){
-                try{
-                    Method m = menu.getClass().getDeclaredMethod(
-                            "setOptionalIconsVisible", Boolean.TYPE);
-                    m.setAccessible(true);
-                    m.invoke(menu, true);
-                }
-                catch(NoSuchMethodException e){
-                    Log.e("Menu", "onMenuOpened", e);
-                }
-                catch(Exception e){
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-        return super.onMenuOpened(featureId, menu);
-    }
-
-
-
-
 
 
     public void setWatchList() {
@@ -289,34 +284,9 @@ public class CTWatchList extends AppCompatActivity{
         MainCoinListView.setAdapter(mainCoinsAdapter);
         mainCoinsAdapter.notifyDataSetChanged();
           }
-      else {
-        mainCoinsAdapter.updateCoins(StoredCoins.getCoinList());
-          }
+
 
       getPrices(StoredCoins.getCoinList());
-
-
-         // listeners
-
-
-       MainCoinListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-           @Override
-           public void onItemClick(AdapterView<?> parent, View view,
-                                   int position, long id) {
-
-                editCoinAt(position);
-
-           }
-
-       });
-
-
-
-
-
-
-
 
 
 
@@ -351,7 +321,8 @@ public class CTWatchList extends AppCompatActivity{
     public void editCoinAt(int position) {
 
         Intent updateCoin = new Intent(getApplicationContext(), CTCoinDetails.class);
-        CoinItem selectedCoin = StoredCoins.getCoinList().get(position);
+
+        CoinItem selectedCoin =  mainCoinsAdapter.getAdapterCoinList().get(position);   // StoredCoins.getCoinList().get(position);
         updateCoin.putExtra("SelectedCoin", selectedCoin);
 
         startActivityForResult(updateCoin, 2);
@@ -360,7 +331,9 @@ public class CTWatchList extends AppCompatActivity{
 
     public void deleteCointAt(int position) {
 
-        StoredCoins.deleteCoin(position);
+
+        CoinItem selectedCoin =  mainCoinsAdapter.getAdapterCoinList().get(position);
+        StoredCoins.deleteCoin(selectedCoin.getID());
 
     }
 
@@ -388,10 +361,90 @@ public class CTWatchList extends AppCompatActivity{
 
         time.schedule(action, 1000);
 
+    }
+
+
+    public void setListViewListeners() {
+
+
+        MainCoinListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+                editCoinAt(position);
+
+            }
+
+        });
+
+
+        /*
+
+        MainCoinListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        // Capture ListView item click
+        MainCoinListView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+
+            @Override
+            public void onItemCheckedStateChanged(ActionMode mode,
+                                                  int position, long id, boolean checked) {
+                // Capture total checked items
+                final int checkedCount = MainCoinListView.getCheckedItemCount();
+                // Set the CAB title according to total checked items
+                mode.setTitle(checkedCount + " Selected");
+                // Calls toggleSelection method from ListViewAdapter Class
+
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_about:
+
+                        // Close CAB
+                        mode.finish();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                mode.getMenuInflater().inflate(R.menu.list_view_menu, menu);
+                return true;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                // TODO Auto-generated method stub
+                return false;
+            }
+        });
+
+            */
+
+
 
     }
 
 
+    public void setSortingCondition(Integer condition) {
+
+        StoredCoins.saveSortingCondition(condition);
+
+        setWatchList();
+
+
+
+    }
 
 
 }

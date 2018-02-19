@@ -2,20 +2,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainPages.CTWatchList">
+
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_sort"
+        android:orderInCategory="99"
+        android:title="@string/action_sort"
+        android:icon="@mipmap/ic_sort_icon"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_about"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
-        android:icon="@drawable/ic_search_icon"
+        android:title="@string/action_about"
         app:showAsAction="never" />
 
-
     <item
+        android:orderInCategory="98"
         android:id="@+id/action_search"
-        android:icon="@drawable/ic_search_icon"
-        android:title="Search"
+        android:icon="@mipmap/ic_search_white"
+        android:title="@string/action_search"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView" />
-
 
 </menu>

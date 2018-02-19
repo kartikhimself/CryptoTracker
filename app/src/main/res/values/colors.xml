@@ -3,4 +3,14 @@
     <color name="colorPrimary">#273c75</color>
     <color name="colorPrimaryDark">#192a56</color>
     <color name="colorAccent">#6ab04c</color>
+
+    <!-- ListView -->
+
+    <color name="activated">#f1f1f1</color>
+    <color name="selected">#f2f2f2</color>
+    <color name="pressed">#e7ffd9</color>
+    <color name="checked">#ffe9e9</color>
+
+
+
 </resources>

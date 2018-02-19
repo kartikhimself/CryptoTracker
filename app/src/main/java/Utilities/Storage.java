@@ -26,6 +26,7 @@ import Objects.CoinItem;
 
 public class Storage {
 
+    private static final String SORTINGCT = "SortingMode";
     private static final String STORAGECT = "CoinStorage";
     private ArrayList<CoinItem> savedCoinList = null;
     public static final String COINLIST = "CoinListKey";
@@ -64,29 +65,36 @@ public class Storage {
 
     }
 
-    public void deleteCoin(int position) {
+    public void deleteCoin(String coinID) {
 
-        savedCoinList.remove(position);
+
+
+        int i;
+        for(i = 0; i < savedCoinList.size(); i++) {
+            String cid = savedCoinList.get(i).getID();
+            if(cid.equals(coinID)) {
+
+                savedCoinList.remove(i);
+
+            }
+        }
+
+
         saveCoinList();
     }
 
     public void updateCoin(CoinItem newCoin) {
 
-
           int i;
           for(i = 0; i < savedCoinList.size(); i++) {
           String cid = savedCoinList.get(i).getID();
           if(cid.equals(newCoin.getID())) {
-
               savedCoinList.set(i,newCoin);
-
             }
           }
 
 
          saveCoinList();
-
-
 
 
 
@@ -111,6 +119,26 @@ public class Storage {
         editor.apply();
 
     }
+
+    public void saveSortingCondition(Integer condition) {
+
+
+        sharedpreferences = context.getSharedPreferences(SORTINGCT, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putInt(SORTINGCT,condition);
+        editor.apply();
+
+    }
+
+    public Integer getSortingCondition() {
+
+        sharedpreferences = context.getSharedPreferences(SORTINGCT, Context.MODE_PRIVATE);
+        Integer condition = sharedpreferences.getInt(SORTINGCT,0);
+
+        return condition;
+
+    }
+
 
     public void clearCoins(CoinsAdapter currentAdapter, TextView balance){
 
@@ -170,8 +198,6 @@ public class Storage {
 
             JSONObject priceObj = new JSONObject(prices);
 
-
-
             int i;
             for(i = 0; i < savedCoinList.size(); i++) {
 
@@ -181,15 +207,13 @@ public class Storage {
                 Double finalPrice = priceArray.getDouble(Util.CURRENCY);
                 tempCoin.setPrice(finalPrice);
 
-
-
             }
 
 
             setPortfolioBalance(balance);
 
             saveCoinList();
-            adapter.updateCoins(savedCoinList);
+            adapter.updateCoins(savedCoinList, getSortingCondition());
 
         } catch (JSONException e) {
             e.printStackTrace();
