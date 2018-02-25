@@ -25,6 +25,11 @@
     <string name="action_sort">Sort</string>
     <string name="action_search">Search coin...</string>
 
+    <!-- TABS -->
+
+    <string name="quantity">Quantity</string>
+    <string name="graphs">Data</string>
+
 
 
 </resources>

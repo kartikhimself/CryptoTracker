@@ -3,22 +3,24 @@ package com.evmcstudios.cryptotracker.MainPages;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
+
+import android.support.design.widget.TabLayout;
+
+
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.Button;
+
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.evmcstudios.cryptotracker.R;
-import com.squareup.picasso.Picasso;
 
+
+import Adapters.CoinsPagerAdapter;
+import CoinSubPages.CoinGraphsPage;
+import CoinSubPages.CoinQuantityPage;
 import Objects.CoinItem;
 
 /**
@@ -27,9 +29,15 @@ import Objects.CoinItem;
 
 public class CTCoinDetails extends AppCompatActivity {
 
-    private CoinItem selectedCoin;
-    private EditText quantity;
-    private Button updatebtn;
+    public CoinItem selectedCoin;
+
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private int[] tabIcons = {
+            R.mipmap.ic_quantity,
+            R.mipmap.ic_graphs,
+
+    };
 
     @Override
     public void onCreate( Bundle savedInstanceState ) {
@@ -43,6 +51,14 @@ public class CTCoinDetails extends AppCompatActivity {
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        // setup view pagers
+
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
+
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+        setUpTabIcons();
 
         // get the data
 
@@ -51,45 +67,36 @@ public class CTCoinDetails extends AppCompatActivity {
 
         selectedCoin =  (CoinItem) bundle.getSerializable("SelectedCoin");
 
-
         // set Title
 
         this.setTitle(selectedCoin.getTitle() + " details");
 
-        // set the views
-
-        ImageView mainImage = findViewById(R.id.coin_image);
 
 
+    }
 
-        // load image
-
-
-        quantity = findViewById(R.id.quantity);
-        updatebtn = findViewById(R.id.update_btn);
-
-        quantity.setText(selectedCoin.getQuantity());
+    public void setUpTabIcons() {
 
 
+        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
 
 
-
-
-        updatebtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                updateCoin(quantity);
-
-            }
-        });
-
-
-        Picasso.with(getApplicationContext()).load(selectedCoin.getImageUrl()).fit().centerCrop().into(mainImage);
 
     }
 
 
+    private void setupViewPager(ViewPager viewPager) {
+        CoinsPagerAdapter adapter = new CoinsPagerAdapter(getSupportFragmentManager());
+
+        CoinQuantityPage quantityPage = new CoinQuantityPage();
+        CoinGraphsPage graphsPage = new CoinGraphsPage();
+
+        adapter.addFragment(quantityPage,getString(R.string.quantity));
+        adapter.addFragment(graphsPage, getString(R.string.graphs));
+
+        viewPager.setAdapter(adapter);
+    }
 
     public void updateCoin(EditText quantity) {
 
@@ -99,21 +106,12 @@ public class CTCoinDetails extends AppCompatActivity {
             value = "0";
         }
 
-
-
-
         selectedCoin.setQuantity(value);
-
 
         Intent returnIntent = new Intent();
         returnIntent.putExtra("SelectedCoin", selectedCoin);
         setResult(Activity.RESULT_OK,returnIntent);
         finish();
-
-
-
-
-
 
     }
 

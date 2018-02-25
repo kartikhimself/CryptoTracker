@@ -15,7 +15,10 @@ public class Util {
     public static String BaseAPI = "https://min-api.cryptocompare.com/data/";
     public static String BaseCOINLIST = "https://min-api.cryptocompare.com/data/all/coinlist";
     public static String BaseMULTICURRENCY = "https://min-api.cryptocompare.com/data/pricemulti?tsyms="+ CURRENCY +"&fsyms=";
-
+    public static String BaseGRAPHMin = "https://min-api.cryptocompare.com/data/histominute?tsym="+ CURRENCY +"&limit=60&fsym=";
+    public static String BaseGRAPHHour = "https://min-api.cryptocompare.com/data/histohour?tsym="+ CURRENCY +"&limit=8&fsym=";
+    public static String BaseGRAPHDay = "https://min-api.cryptocompare.com/data/histoday?tsym="+ CURRENCY +"&limit=7&fsym=";
+    public static String defaultRange = "1H";
 
     // text stuff
 

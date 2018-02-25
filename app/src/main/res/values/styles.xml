@@ -39,5 +39,22 @@
 
     </style>
 
+    <!-- Graph Button Style -->
+
+    <style name="graphbuttonStyle">
+
+        <item name="android:textColor">#fff</item>
+        <item name="android:background">@color/colorAccent</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_marginLeft">2sp</item>
+        <item name="android:layout_marginRight">2sp</item>
+        <item name="android:layout_marginTop">8sp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+
+    </style>
+
 
 </resources>

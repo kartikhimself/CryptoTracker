@@ -11,6 +11,12 @@
     <color name="pressed">#e7ffd9</color>
     <color name="checked">#ffe9e9</color>
 
+    <!-- GRAPS -->
+
+    <color name="linecolor">#6ab04c</color>
+    <color name="bgcolor">#956ab04c</color>
+    <color name="gridcolor">#ffffff</color>
+
 
 
 </resources>

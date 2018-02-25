@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.evmcstudios.cryptotracker.MainPages.CTSearchCoin;
 import com.evmcstudios.cryptotracker.MainPages.CTWatchList;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import HttpClient.HttpHandler;
@@ -19,11 +20,11 @@ import Utilities.Util;
 
 public class GetCoinsPricesTask extends AsyncTask<Void,Void,String> {
 
-    private CTWatchList activity;
+    private WeakReference<CTWatchList> activity;
     private List<CoinItem> list;
 
     public GetCoinsPricesTask(CTWatchList activity, List<CoinItem> list) {
-        this.activity = activity;
+        this.activity = new WeakReference<>(activity);
         this.list = list;
     }
 
@@ -74,18 +75,20 @@ public class GetCoinsPricesTask extends AsyncTask<Void,Void,String> {
 
 
         if(coinprices != null) {
-            activity.setCoinsPrice(coinprices);
+
+            activity.get().setCoinsPrice(coinprices);
+
         }
         else {
-            Toast.makeText(activity.getApplicationContext(), "Error loading offers", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity.get().getApplicationContext(), "Error loading coin prices", Toast.LENGTH_SHORT).show();
         }
 
 
         // cancel task here
 
-        if(activity.PricesTask != null) {
-            activity.PricesTask.cancel(true);
-            activity.PricesTask = null;
+        if(activity.get().PricesTask != null) {
+            activity.get().PricesTask.cancel(true);
+            activity.get().PricesTask = null;
         }
 
 

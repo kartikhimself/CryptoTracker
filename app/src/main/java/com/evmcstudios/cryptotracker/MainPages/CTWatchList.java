@@ -289,12 +289,18 @@ public class CTWatchList extends AppCompatActivity{
       getPrices(StoredCoins.getCoinList());
 
 
-
-
         }
 
+   else {
 
-    }
+       refreshLayout.setRefreshing(false);
+
+          }
+
+   }
+
+
+
 
 
     public void getPrices(List<CoinItem> list) {
@@ -311,6 +317,7 @@ public class CTWatchList extends AppCompatActivity{
     public void setCoinsPrice(String coinprices) {
 
         StoredCoins.setCoinsPrices(coinprices, mainCoinsAdapter, Balance );
+
 
 
         delayeRefresh(refreshLayout);

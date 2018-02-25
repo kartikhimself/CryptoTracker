@@ -40,7 +40,7 @@ public class Sorting {
         });
 
 
-        builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
 
