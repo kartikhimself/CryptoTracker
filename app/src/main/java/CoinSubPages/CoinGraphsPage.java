@@ -27,7 +27,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -36,9 +39,11 @@ import java.util.Locale;
 import Interfaces.TaskCompleted;
 import Objects.CoinItem;
 import Tasks.GetCoinGraphTask;
+
+import Utilities.PrettyFyGraph;
 import Utilities.Util;
 
-import static Utilities.PrettyFyGraph.setAndGetGraph;
+
 
 /**
  * Created by Ultranova on 2/24/2018.
@@ -104,11 +109,11 @@ public class CoinGraphsPage extends Fragment implements TaskCompleted, View.OnCl
 
     }
 
-    public void setGraphStyle(DataPoint[] data) {
+    public void setGraphStyle(DataPoint[] data, Boolean lowValue) {
 
 
 
-        graph = setAndGetGraph( (CTCoinDetails) getActivity(), graph, data, range  );
+        graph = PrettyFyGraph.setAndGetGraph( (CTCoinDetails) getActivity(), graph, data, range, lowValue  );
 
 
     }
@@ -117,6 +122,8 @@ public class CoinGraphsPage extends Fragment implements TaskCompleted, View.OnCl
 
     @Override
     public void onTaskComplete(String result) {
+
+        Boolean lowValue = false;
 
         try {
 
@@ -130,25 +137,36 @@ public class CoinGraphsPage extends Fragment implements TaskCompleted, View.OnCl
         int i;
         for(i = 0; i < graphArr.length(); i++) {
 
-            String price = graphArr.getJSONObject(i).getString("close");
+            Double price = graphArr.getJSONObject(i).getDouble("close");
             String time = graphArr.getJSONObject(i).getString("time");
 
-            Double dprice = Double.parseDouble(price);
+            BigDecimal currentNumber = new BigDecimal(price);
+            BigDecimal decimal2 = currentNumber.setScale(9, RoundingMode.HALF_UP);
+
+            Double toBeTruncated = Double.parseDouble(decimal2.toPlainString());
 
             Long tsLong = Long.parseLong(time);
-            Date labelDate = new Date(tsLong*1000);
+            Date labelDate = new Date(tsLong*Util.timeMultiplier);
 
-            points[i] = new DataPoint(labelDate,dprice);
+            if(toBeTruncated <= Util.defaultLowNumber){
+                lowValue = true;
+                toBeTruncated = toBeTruncated * Util.lowNumberMultiplier;
+            }
+
+            points[i] = new DataPoint(labelDate, toBeTruncated );
 
            }
 
-            setGraphStyle(points);
+            setGraphStyle(points, lowValue);
 
         } catch (JSONException e) {
+
     e.printStackTrace();
+
         }
 
     }
+
 
 
     @Override

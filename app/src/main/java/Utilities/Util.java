@@ -16,13 +16,17 @@ public class Util {
     public static String BaseCOINLIST = "https://min-api.cryptocompare.com/data/all/coinlist";
     public static String BaseMULTICURRENCY = "https://min-api.cryptocompare.com/data/pricemulti?tsyms="+ CURRENCY +"&fsyms=";
     public static String BaseGRAPHMin = "https://min-api.cryptocompare.com/data/histominute?tsym="+ CURRENCY +"&limit=60&fsym=";
-    public static String BaseGRAPHHour = "https://min-api.cryptocompare.com/data/histohour?tsym="+ CURRENCY +"&limit=8&fsym=";
-    public static String BaseGRAPHDay = "https://min-api.cryptocompare.com/data/histoday?tsym="+ CURRENCY +"&limit=7&fsym=";
+    public static String BaseGRAPHHour = "https://min-api.cryptocompare.com/data/histohour?tsym="+ CURRENCY +"&limit=24&fsym=";
+    public static String BaseGRAPHDay = "https://min-api.cryptocompare.com/data/histoday?tsym="+ CURRENCY +"&limit=30&fsym=";
     public static String defaultRange = "1H";
+    public static Integer lowNumberMultiplier = 100;
+    public static Integer timeMultiplier = 1000;
+    public static Double defaultLowNumber = 0.0005;
 
     // text stuff
 
     public static String NUMBERPATTERN = "###,###,###,###,###.###";
+    public static String GRAPHPATTERN = "##############.############";
 
 
     public static String getPlainText(String html) {
@@ -41,6 +45,17 @@ public class Util {
         decimalFormatter.setMaximumFractionDigits(3);
 
        return decimalFormatter.format(number);
+
+
+    }
+
+    public static String getNumberForGraph(Double number) {
+
+        DecimalFormat decimalFormatter = new DecimalFormat(Util.NUMBERPATTERN);
+        decimalFormatter.setMinimumFractionDigits(2);
+        decimalFormatter.setMaximumFractionDigits(9);
+
+        return decimalFormatter.format(number);
 
 
     }
