@@ -22,11 +22,13 @@ import android.widget.ListView;
 import android.widget.SearchView;
 
 import com.evmcstudios.cryptotracker.R;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import Adapters.CoinsAdapter;
 import Adapters.CoinsSelectAdapter;
 import Objects.CoinBucket;
 import Objects.CoinItem;
+import Services.MyFirebaseInstanceIDService;
 import Tasks.GetCoinsListTask;
 
 public class CTSearchCoin extends AppCompatActivity {
@@ -36,12 +38,18 @@ public class CTSearchCoin extends AppCompatActivity {
     private ListView coinListView;
     private LinearLayout progressBarLayout;
     private SearchView coinSearchView;
+    private MyFirebaseInstanceIDService service;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ct_search_page);
+
+
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -55,7 +63,6 @@ public class CTSearchCoin extends AppCompatActivity {
 
         coinListView = (ListView) findViewById(R.id.coinListView);
         progressBarLayout = (LinearLayout) findViewById(R.id.progressBarLayout);
-
 
 
         showProgress(true);

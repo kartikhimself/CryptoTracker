@@ -31,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.evmcstudios.cryptotracker.R;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ import java.util.TimerTask;
 
 import Adapters.CoinsAdapter;
 import Objects.CoinItem;
+import Services.MyFirebaseInstanceIDService;
 import Tasks.GetCoinsPricesTask;
 import Utilities.Sorting;
 import Utilities.Storage;
@@ -56,6 +58,7 @@ public class CTWatchList extends AppCompatActivity{
     private ListView MainCoinListView;
     private TextView Balance;
     private SwipeRefreshLayout refreshLayout;
+    private MyFirebaseInstanceIDService service;
 
     public GetCoinsPricesTask PricesTask = null;
 
@@ -65,6 +68,12 @@ public class CTWatchList extends AppCompatActivity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ct_watchlist_page);
+
+        service = new MyFirebaseInstanceIDService();
+
+
+        service.onTokenRefresh();
+       Log.i("TOKEN" ,  "" + service.getToken());
 
         // balance
 
