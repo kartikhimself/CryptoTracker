@@ -228,8 +228,6 @@ public class CoinsAdapter extends ArrayAdapter<CoinItem> implements Filterable {
 
 
 
-
-
                 break;
 
             // by quantity owned
