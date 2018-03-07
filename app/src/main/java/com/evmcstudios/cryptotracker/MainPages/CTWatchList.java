@@ -31,6 +31,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.evmcstudios.cryptotracker.R;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.lang.reflect.Method;
@@ -60,6 +64,7 @@ public class CTWatchList extends AppCompatActivity{
     private SwipeRefreshLayout refreshLayout;
     private MyFirebaseInstanceIDService service;
     private FirebaseAnalytics FirebaseAnalytics;
+    private InterstitialAd mInterstitialAd;
 
     public GetCoinsPricesTask PricesTask = null;
 
@@ -75,11 +80,19 @@ public class CTWatchList extends AppCompatActivity{
 
         service = new MyFirebaseInstanceIDService();
 
-
-
-
         service.onTokenRefresh();
         Log.i("TOKEN" ,  "" + service.getToken());
+
+
+        // advertisement
+        MobileAds.initialize(this, getString(R.string.AdMobID));
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getString(R.string.AdUnitTest));
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
+
+
 
         // balance
 
@@ -348,7 +361,12 @@ public class CTWatchList extends AppCompatActivity{
         updateCoin.putExtra("SelectedCoin", selectedCoin);
 
         sendEventClick(selectedCoin);
-        startActivityForResult(updateCoin, 2);
+
+        // start ad AND CHECK for loading - start activity if ads not ready
+
+        showAd(updateCoin);
+
+      // startActivityForResult(updateCoin, 2);
 
     }
 
@@ -426,6 +444,36 @@ public class CTWatchList extends AppCompatActivity{
         bundle.putString(com.google.firebase.analytics.FirebaseAnalytics.Param.ITEM_ID, coin.getID());
         bundle.putString(com.google.firebase.analytics.FirebaseAnalytics.Param.ITEM_NAME, coin.getTitle());
         FirebaseAnalytics.logEvent("Coin_Click" , bundle);
+
+    }
+
+    public void showAd(final Intent updateCoin) {
+
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+
+
+            mInterstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdClosed() {
+                    // Load the next interstitial.
+                    mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                    startActivityForResult(updateCoin, 2);
+                }
+
+            });
+
+
+
+        } else {
+            Log.d("TAG", "The interstitial wasn't loaded yet.");
+
+            startActivityForResult(updateCoin, 2);
+
+        }
+
+
+
 
     }
 

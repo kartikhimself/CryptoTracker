@@ -31,5 +31,11 @@
     <string name="graphs">Data</string>
 
 
+    <!-- ADS -->
+
+    <string name="AdMobID">ca-app-pub-9284077315374106~6531377622</string>
+    <string name="AdUnitInterstitial">ca-app-pub-9284077315374106/8441077860</string>
+    <string name="AdUnitTest">ca-app-pub-3940256099942544/1033173712</string>
+
 
 </resources>

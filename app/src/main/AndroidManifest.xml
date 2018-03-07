@@ -18,6 +18,9 @@
 
 
 
+
+
+
         <!--  Pre Loader -->
         <activity
             android:launchMode="singleTop"
@@ -106,6 +109,17 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
+
+
+
+        <!-- NOTIFICATION ICONS -->
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_cticon" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/gridcolor" />
 
 
     </application>
