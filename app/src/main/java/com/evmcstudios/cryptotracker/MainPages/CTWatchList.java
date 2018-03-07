@@ -59,6 +59,7 @@ public class CTWatchList extends AppCompatActivity{
     private TextView Balance;
     private SwipeRefreshLayout refreshLayout;
     private MyFirebaseInstanceIDService service;
+    private FirebaseAnalytics FirebaseAnalytics;
 
     public GetCoinsPricesTask PricesTask = null;
 
@@ -69,11 +70,16 @@ public class CTWatchList extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ct_watchlist_page);
 
+        FirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        FirebaseAnalytics.setCurrentScreen(this, getString(R.string.app_watchlist), null );
+
         service = new MyFirebaseInstanceIDService();
 
 
+
+
         service.onTokenRefresh();
-       Log.i("TOKEN" ,  "" + service.getToken());
+        Log.i("TOKEN" ,  "" + service.getToken());
 
         // balance
 
@@ -309,9 +315,6 @@ public class CTWatchList extends AppCompatActivity{
    }
 
 
-
-
-
     public void getPrices(List<CoinItem> list) {
 
             if(PricesTask == null) {
@@ -336,11 +339,15 @@ public class CTWatchList extends AppCompatActivity{
 
     public void editCoinAt(int position) {
 
-        Intent updateCoin = new Intent(getApplicationContext(), CTCoinDetails.class);
 
+
+
+
+        Intent updateCoin = new Intent(getApplicationContext(), CTCoinDetails.class);
         CoinItem selectedCoin =  mainCoinsAdapter.getAdapterCoinList().get(position);   // StoredCoins.getCoinList().get(position);
         updateCoin.putExtra("SelectedCoin", selectedCoin);
 
+        sendEventClick(selectedCoin);
         startActivityForResult(updateCoin, 2);
 
     }
@@ -396,56 +403,7 @@ public class CTWatchList extends AppCompatActivity{
         });
 
 
-        /*
 
-        MainCoinListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        // Capture ListView item click
-        MainCoinListView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
-
-            @Override
-            public void onItemCheckedStateChanged(ActionMode mode,
-                                                  int position, long id, boolean checked) {
-                // Capture total checked items
-                final int checkedCount = MainCoinListView.getCheckedItemCount();
-                // Set the CAB title according to total checked items
-                mode.setTitle(checkedCount + " Selected");
-                // Calls toggleSelection method from ListViewAdapter Class
-
-            }
-
-            @Override
-            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_about:
-
-                        // Close CAB
-                        mode.finish();
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-
-            @Override
-            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                mode.getMenuInflater().inflate(R.menu.list_view_menu, menu);
-                return true;
-            }
-
-            @Override
-            public void onDestroyActionMode(ActionMode mode) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                // TODO Auto-generated method stub
-                return false;
-            }
-        });
-
-            */
 
 
 
@@ -459,6 +417,15 @@ public class CTWatchList extends AppCompatActivity{
         setWatchList();
 
 
+
+    }
+
+    public void sendEventClick(CoinItem coin) {
+
+        Bundle bundle = new Bundle();
+        bundle.putString(com.google.firebase.analytics.FirebaseAnalytics.Param.ITEM_ID, coin.getID());
+        bundle.putString(com.google.firebase.analytics.FirebaseAnalytics.Param.ITEM_NAME, coin.getTitle());
+        FirebaseAnalytics.logEvent("Coin_Click" , bundle);
 
     }
 

@@ -16,6 +16,7 @@ import android.widget.EditText;
 
 
 import com.evmcstudios.cryptotracker.R;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 
 import Adapters.CoinsPagerAdapter;
@@ -39,11 +40,19 @@ public class CTCoinDetails extends AppCompatActivity {
 
     };
 
+    private FirebaseAnalytics FirebaseAnalytics;
+
     @Override
     public void onCreate( Bundle savedInstanceState ) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.ct_details_page);
+
+
+        FirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        FirebaseAnalytics.setCurrentScreen(this, getString(R.string.app_details_coin), null );
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

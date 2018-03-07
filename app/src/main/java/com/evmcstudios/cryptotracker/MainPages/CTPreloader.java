@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.evmcstudios.cryptotracker.R;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -17,12 +18,18 @@ import java.util.TimerTask;
 
 public class CTPreloader extends AppCompatActivity {
 
+    private  FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
          setContentView(R.layout.content_ctpreloader);
+
+        mFirebaseAnalytics = mFirebaseAnalytics.getInstance(this);
+        mFirebaseAnalytics.setCurrentScreen(this, getString(R.string.app_search_coin), null );
+
+
          goToMainPage(getApplicationContext());
 
 

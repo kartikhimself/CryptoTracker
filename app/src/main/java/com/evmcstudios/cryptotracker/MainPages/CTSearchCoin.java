@@ -40,6 +40,7 @@ public class CTSearchCoin extends AppCompatActivity {
     private SearchView coinSearchView;
     private MyFirebaseInstanceIDService service;
 
+    private FirebaseAnalytics FirebaseAnalytics;
 
 
     @Override
@@ -47,6 +48,9 @@ public class CTSearchCoin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ct_search_page);
 
+
+        FirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        FirebaseAnalytics.setCurrentScreen(this, getString(R.string.app_search_coin), null );
 
 
 
