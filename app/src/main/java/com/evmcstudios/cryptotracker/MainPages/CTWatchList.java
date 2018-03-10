@@ -157,7 +157,6 @@ public class CTWatchList extends AppCompatActivity{
             @Override
             public void onClick(View view) {
 
-
                   StoredCoins.clearCoins(mainCoinsAdapter,Balance);
                   Snackbar.make(view, "Deleted coins", Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
