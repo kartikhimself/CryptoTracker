@@ -1,11 +1,14 @@
 package com.evmcstudios.cryptotracker.MainPages;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.TextView;
 
 import com.evmcstudios.cryptotracker.R;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -35,6 +38,22 @@ public class CTAbout extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         this.setTitle(R.string.app_about);
+
+        //
+
+        TextView ppView = (TextView) findViewById(R.id.app_privacy_buttontext);
+
+        ppView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent privacy  = new Intent(CTAbout.this, CTPrivacyPolicy.class);
+                startActivity(privacy);
+
+            }
+        });
+
+
 
 
     }

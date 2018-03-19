@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">CryptoTracker</string>
     <string name="app_publisher">EVMC Studios</string>
-    <string name="app_website">(c) 2018 - www.evmcstudios.com</string>
-    <string name="app_version">Version 1.0</string>
+    <string name="app_website">© 2018. All rights reserved</string>
+    <string name="app_version">V1.0 - powered by cryptocompare.com</string>
+    <string name="app_privacy"><u>Privacy Policy</u></string>
+    <string name="app_purl">http://evmcstudios.com/cryptotracker/privacy_policy.html</string>
     <string name="action_about">About</string>
 
     <!-- PAGES -->
@@ -11,6 +13,7 @@
     <string name="app_details_coin">Coin details</string>
     <string name="app_news">News</string>
     <string name="app_about">About</string>
+    <string name="app_privacy_policy">Privacy Policy</string>
 
     <!-- COIN DETAILS -->
     <string name="coin_name">Coin Name</string>

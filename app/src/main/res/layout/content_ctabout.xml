@@ -87,6 +87,17 @@
             android:textColor="#fff"
             android:textSize="12sp" />
 
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/app_privacy"
+            android:textColor="#fff"
+            android:id="@+id/app_privacy_buttontext"
+            android:layout_marginTop="10dp"
+            android:textSize="12sp" />
+
     </LinearLayout>
 
 

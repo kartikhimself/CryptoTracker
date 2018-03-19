@@ -88,7 +88,7 @@ public class CTWatchList extends AppCompatActivity{
         MobileAds.initialize(this, getString(R.string.AdMobID));
 
         mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getString(R.string.AdUnitTest));
+        mInterstitialAd.setAdUnitId(getString(R.string.AdUnitInterstitial));
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
 
@@ -459,6 +459,8 @@ public class CTWatchList extends AppCompatActivity{
                     mInterstitialAd.loadAd(new AdRequest.Builder().build());
                     startActivityForResult(updateCoin, 2);
                 }
+
+
 
             });
 

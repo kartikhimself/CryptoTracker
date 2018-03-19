@@ -53,7 +53,6 @@ public class CTSearchCoin extends AppCompatActivity {
         FirebaseAnalytics.setCurrentScreen(this, getString(R.string.app_search_coin), null );
 
 
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

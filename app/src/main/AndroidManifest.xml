@@ -90,6 +90,19 @@
                 android:value=".MainPages.CTWatchList" />
         </activity>
 
+        <!-- Privacy Page -->
+        <activity
+            android:parentActivityName=".MainPages.CTAbout"
+            android:launchMode="singleTop"
+            android:name=".MainPages.CTPrivacyPolicy"
+            android:label="@string/app_privacy_policy"
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainPages.CTAbout" />
+        </activity>
+
 
 
         <!-- SERVICES -->
