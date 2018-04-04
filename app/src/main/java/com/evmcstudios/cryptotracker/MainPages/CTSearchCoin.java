@@ -1,21 +1,13 @@
 package com.evmcstudios.cryptotracker.MainPages;
 
 import android.app.Activity;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -24,11 +16,10 @@ import android.widget.SearchView;
 import com.evmcstudios.cryptotracker.R;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import Adapters.CoinsAdapter;
 import Adapters.CoinsSelectAdapter;
 import Objects.CoinBucket;
 import Objects.CoinItem;
-import Services.MyFirebaseInstanceIDService;
+import servicesarea.MyFirebaseInstanceIDService;
 import Tasks.GetCoinsListTask;
 
 public class CTSearchCoin extends AppCompatActivity {

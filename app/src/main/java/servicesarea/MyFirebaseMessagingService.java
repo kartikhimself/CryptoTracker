@@ -1,4 +1,4 @@
-package Services;
+package servicesarea;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 
