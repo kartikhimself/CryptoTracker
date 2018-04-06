@@ -36,6 +36,8 @@ import java.util.TimerTask;
 
 import Adapters.CoinsAdapter;
 import Objects.CoinItem;
+import Utilities.Referrer;
+import Utilities.Util;
 import servicesarea.MyFirebaseInstanceIDService;
 import Tasks.GetCoinsPricesTask;
 import Utilities.Sorting;
@@ -58,6 +60,7 @@ public class CTWatchList extends AppCompatActivity{
     private InterstitialAd mInterstitialAd;
 
     public GetCoinsPricesTask PricesTask = null;
+    public Referrer referrerObj = null;
 
 
 
@@ -74,6 +77,13 @@ public class CTWatchList extends AppCompatActivity{
         service.onTokenRefresh();
         Log.i("TOKEN" ,  "" + service.getToken());
 
+       // referrer retrieval
+
+        referrerObj = new Referrer(getApplicationContext());
+
+        Log.i("Retreival " , referrerObj.getFinalQueryString());
+
+
 
         // advertisement
         MobileAds.initialize(this, getString(R.string.AdMobID));
@@ -81,8 +91,6 @@ public class CTWatchList extends AppCompatActivity{
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(getString(R.string.AdUnitInterstitial));
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
-
-
 
 
         // balance

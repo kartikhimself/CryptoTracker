@@ -1,0 +1,4 @@
+C:\Users\Ultranova\AppData\Local\Android\Sdk\platform-tools
+
+
+am broadcast -a com.android.vending.INSTALL_REFERRER -n com.evmcstudios.cryptotracker/com.google.android.gms.analytics.CampaignTrackingReceiver --es "referrer" "utm_source=test_source&utm_medium=test_medium&utm_term=test_term&utm_content=test_content&utm_campaign=test_name"

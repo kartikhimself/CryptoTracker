@@ -36,7 +36,6 @@ public class Storage {
     public Storage(Context context) {
         this.context = context;
         this.savedCoinList = new ArrayList<CoinItem>();
-
         initArray();
     }
 
@@ -121,7 +120,6 @@ public class Storage {
     }
 
     public void saveSortingCondition(Integer condition) {
-
 
         sharedpreferences = context.getSharedPreferences(SORTINGCT, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();

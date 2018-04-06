@@ -127,7 +127,7 @@
         <!-- REFFERER RECEIVER -->
 
         <!-- Used for Google Play Store Campaign Measurement-->
-        <receiver android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
+        <receiver android:name="servicesarea.MyReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

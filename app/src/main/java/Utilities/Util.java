@@ -23,6 +23,8 @@ public class Util {
     public static Integer timeMultiplier = 1000;
     public static Double defaultLowNumber = 0.0005;
 
+    public static String referrer = "";
+
     // text stuff
 
     public static String NUMBERPATTERN = "###,###,###,###,###.###";
@@ -57,7 +59,9 @@ public class Util {
 
         return decimalFormatter.format(number);
 
-
     }
+
+
+
 
 }
