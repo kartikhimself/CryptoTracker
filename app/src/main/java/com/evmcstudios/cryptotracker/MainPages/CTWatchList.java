@@ -136,6 +136,7 @@ public class CTWatchList extends AppCompatActivity{
             @Override
             public void onClick(View view) {
 
+                sendCustomEvent("Coin_Search","Started", "Searching");
                 Intent searchCoin = new Intent(getApplicationContext(), CTSearchCoin.class);
                 startActivityForResult(searchCoin, 1);
 
@@ -168,6 +169,10 @@ public class CTWatchList extends AppCompatActivity{
                 CoinItem finalCoin = (CoinItem) data.getSerializableExtra("SelectedCoin");
                 StoredCoins.addCoin(finalCoin);
                 setWatchList();
+
+                sendCustomEvent("Coin_Added", finalCoin.getID(), finalCoin.getTitle());
+
+
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
@@ -182,6 +187,8 @@ public class CTWatchList extends AppCompatActivity{
                 CoinItem finalCoin = (CoinItem) data.getSerializableExtra("SelectedCoin");
                 StoredCoins.updateCoin(finalCoin);
                 setWatchList();
+
+                sendCustomEvent("Coin_Added",finalCoin.getID(), finalCoin.getTitle());
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
@@ -350,7 +357,9 @@ public class CTWatchList extends AppCompatActivity{
         CoinItem selectedCoin =  mainCoinsAdapter.getAdapterCoinList().get(position);   // StoredCoins.getCoinList().get(position);
         updateCoin.putExtra("SelectedCoin", selectedCoin);
 
-        sendEventClick(selectedCoin);
+
+
+        sendCustomEvent("Coin_details_click", selectedCoin.getID(), selectedCoin.getTitle());
 
         // start ad AND CHECK for loading - start activity if ads not ready
 
@@ -364,6 +373,9 @@ public class CTWatchList extends AppCompatActivity{
 
 
         CoinItem selectedCoin =  mainCoinsAdapter.getAdapterCoinList().get(position);
+
+        sendCustomEvent("Coin_Deleted",selectedCoin.getID(), selectedCoin.getTitle());
+
         StoredCoins.deleteCoin(selectedCoin.getID());
 
     }
@@ -428,12 +440,14 @@ public class CTWatchList extends AppCompatActivity{
 
     }
 
-    public void sendEventClick(CoinItem coin) {
+
+    public void sendCustomEvent(String event, String action, String label) {
 
         Bundle bundle = new Bundle();
-        bundle.putString(com.google.firebase.analytics.FirebaseAnalytics.Param.ITEM_ID, coin.getID());
-        bundle.putString(com.google.firebase.analytics.FirebaseAnalytics.Param.ITEM_NAME, coin.getTitle());
-        FirebaseAnalytics.logEvent("Coin_Click" , bundle);
+        bundle.putString(com.google.firebase.analytics.FirebaseAnalytics.Param.ITEM_ID, action);
+        bundle.putString(com.google.firebase.analytics.FirebaseAnalytics.Param.ITEM_NAME, label);
+        FirebaseAnalytics.logEvent(event , bundle);
+
 
     }
 
