@@ -1,5 +1,5 @@
-# CryptoWatch
-CryptoWatch uses coinmarketcap.com to track the value of your crypto coin portfolio.
+# Crypto Portfolio
+Crypto Portfolio uses coinmarketcap.com to track the value of your crypto coin portfolio.
 
 ## Usage
 
